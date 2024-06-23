@@ -29,7 +29,6 @@ func TestMainHandlerWhenCityNotMatch(t *testing.T) { //Город, которы�
 	responseRecorder := httptest.NewRecorder()
 	handler := http.HandlerFunc(mainHandle)
 	handler.ServeHTTP(responseRecorder, req)
-
 	require.Equal(t, http.StatusOK, responseRecorder.Code)
 
 	reqCity := req.URL.Query().Get("city")
@@ -43,7 +42,6 @@ func TestMainHandlerWhenCountMoreThanTotal(t *testing.T) { // Если в пар
 	responseRecorder := httptest.NewRecorder()
 	handler := http.HandlerFunc(mainHandle)
 	handler.ServeHTTP(responseRecorder, req)
-
 	require.Equal(t, http.StatusOK, responseRecorder.Code)
 
 	body := responseRecorder.Body.String()
