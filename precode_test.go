@@ -9,7 +9,7 @@ import (
 	"testing"
 )
 
-func TestMainHandlerCorrectResponse(t *testing.T) {
+func TestMainHandlerCorrectResponse(t *testing.T) { //Запрос сформирован корректно, сервис возвращает код ответа 200 и тело ответа не пустое.
 
 	req := httptest.NewRequest("GET", "/cafe?count=2&city=moscow", nil)
 
@@ -23,7 +23,7 @@ func TestMainHandlerCorrectResponse(t *testing.T) {
 	require.NotEmpty(t, body)
 }
 
-func TestMainHandlerWhenCityNotMatch(t *testing.T) {
+func TestMainHandlerWhenCityNotMatch(t *testing.T) { //Город, который передаётся в параметре city, не поддерживается. Сервис возвращает код ответа 400 и ошибку wrong city value в теле ответа.
 	city := "moscow"
 	req := httptest.NewRequest("GET", "/cafe?count=2&city=moskek", nil)
 
@@ -35,7 +35,7 @@ func TestMainHandlerWhenCityNotMatch(t *testing.T) {
 	require.Equal(t, reqCity, city, "wrong city value")
 }
 
-func TestMainHandlerWhenCountMoreThanTotal(t *testing.T) {
+func TestMainHandlerWhenCountMoreThanTotal(t *testing.T) { // Если в параметре count указано больше, чем есть всего, должны вернуться все доступные кафе.
 
 	req := httptest.NewRequest("GET", "/cafe?count=5&city=moscow", nil)
 
