@@ -23,7 +23,7 @@ func TestMainHandlerCorrectResponse(t *testing.T) { //Запрос сформи�
 }
 
 func TestMainHandlerWhenCityNotMatch(t *testing.T) { //Город, который передаётся в параметре city, не поддерживается. Сервис возвращает код ответа 400 и ошибку wrong city value в теле ответа.
-	city := "moscow"
+
 	req := httptest.NewRequest("GET", "/cafe?count=2&city=moskek", nil)
 
 	responseRecorder := httptest.NewRecorder()
@@ -31,12 +31,11 @@ func TestMainHandlerWhenCityNotMatch(t *testing.T) { //Город, которы�
 	handler.ServeHTTP(responseRecorder, req)
 	require.Equal(t, http.StatusOK, responseRecorder.Code)
 
-	reqCity := req.URL.Query().Get("city")
-	require.Equal(t, reqCity, city, "wrong city value")
+	assert.Equal(t, "wrong city value", responseRecorder.Body.String())
 }
 
 func TestMainHandlerWhenCountMoreThanTotal(t *testing.T) { // Если в параметре count указано больше, чем есть всего, должны вернуться все доступные кафе.
-
+	totalCount := 4
 	req := httptest.NewRequest("GET", "/cafe?count=5&city=moscow", nil)
 
 	responseRecorder := httptest.NewRecorder()
@@ -46,7 +45,6 @@ func TestMainHandlerWhenCountMoreThanTotal(t *testing.T) { // Если в пар
 
 	body := responseRecorder.Body.String()
 	list := strings.Split(body, ",")
-	reqCount := req.URL.Query().Get("count")
 
-	assert.Len(t, reqCount, len(list), body)
+	assert.Len(t, list, totalCount, body)
 }
